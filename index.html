@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chemical Engineering | IIT Patna</title>
+  <title>ChemE | IIT Patna</title>
 
   <!-- ✅ Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-G4SVTBNYY4"></script>
@@ -18,20 +18,18 @@
   </script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700;800&display=swap');
 
     :root {
-      --primary: #2563eb;
-      --primary-dark: #1e40af;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.4);
+      --bg-dark: #020617;
       --bg-light: #f8fafc;
-      --bg-dark: #0f172a;
-      --text-light: #1e293b;
-      --text-dark: #f1f5f9;
-      --glass-light: rgba(255, 255, 255, 0.7);
-      --glass-dark: rgba(30, 41, 59, 0.7);
-      --card-light: #ffffff;
-      --card-dark: #1e293b;
-      --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      --card-dark: rgba(30, 41, 59, 0.5);
+      --card-light: rgba(255, 255, 255, 0.8);
+      --text-dark: #f8fafc;
+      --text-light: #0f172a;
+      --transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     * {
@@ -41,432 +39,416 @@
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg-light);
-      color: var(--text-light);
-      overflow-x: hidden;
-      transition: var(--transition);
-      line-height: 1.6;
-    }
-
-    body.dark-mode {
+      font-family: 'Instrument Sans', sans-serif;
       background-color: var(--bg-dark);
       color: var(--text-dark);
+      overflow-x: hidden;
+      transition: background-color 0.5s, color 0.5s;
+      min-height: 100vh;
     }
 
-    /* --- Navigation --- */
-    nav {
+    body.light-mode {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    /* --- Animated Background --- */
+    .mesh-bg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      z-index: 1000;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      padding: 20px;
-      background: var(--glass-light);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      transition: var(--transition);
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      filter: blur(100px);
+      opacity: 0.6;
     }
 
-    body.dark-mode nav {
-      background: var(--glass-dark);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    .mesh-blob {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: float 20s infinite alternate;
+    }
+
+    .mesh-blob-2 {
+      top: 50%;
+      right: -10%;
+      background: #ec4899;
+      animation-delay: -5s;
+    }
+
+    @keyframes float {
+      from { transform: translate(0, 0); }
+      to { transform: translate(20%, 30%); }
+    }
+
+    /* --- Floating Navigation --- */
+    nav {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      display: flex;
+      gap: 12px;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 100px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    body.light-mode nav {
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.1);
     }
 
     nav a {
       text-decoration: none;
       color: inherit;
       font-weight: 600;
-      font-size: 0.95rem;
-      position: relative;
-      opacity: 0.8;
+      font-size: 0.85rem;
+      padding: 10px 18px;
+      border-radius: 100px;
       transition: var(--transition);
+      opacity: 0.6;
     }
 
     nav a:hover, nav a.active {
       opacity: 1;
-      color: var(--primary);
+      background: var(--accent);
+      color: white;
     }
 
-    nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      width: 0%;
-      height: 3px;
-      background: var(--primary);
-      border-radius: 20px;
-      transition: var(--transition);
-      transform: translateX(-50%);
-    }
-
-    nav a.active::after, nav a:hover::after {
-      width: 100%;
-    }
-
-    /* --- Toggle Mode Button --- */
+    /* --- Toggle Mode --- */
     .toggle-mode {
       position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--primary);
+      top: 24px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--accent);
       color: white;
       border: none;
       cursor: pointer;
       z-index: 1001;
-      font-size: 20px;
-      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: var(--transition);
-    }
-
-    .toggle-mode:hover {
-      transform: scale(1.1) rotate(15deg);
-      box-shadow: 0 15px 25px rgba(37, 99, 235, 0.4);
+      box-shadow: 0 10px 20px var(--accent-glow);
     }
 
     /* --- Hero Section --- */
     .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
       position: relative;
+    }
+
+    .hero-container {
+      max-width: 1100px;
       width: 100%;
-      height: 90vh;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-content h1 {
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 800;
+      line-height: 0.9;
+      letter-spacing: -3px;
+      margin-bottom: 24px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #fff 0%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    body.light-mode .gradient-text {
+      background: linear-gradient(135deg, #0f172a 0%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-visual {
+      position: relative;
+      height: 500px;
+      border-radius: 32px;
       overflow: hidden;
-      margin-bottom: 60px;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5);
     }
 
     .hero-slider {
       display: flex;
       height: 100%;
-      transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+      transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
     }
 
     .hero-slide {
-      width: 100vw;
+      min-width: 100%;
       height: 100%;
-      flex-shrink: 0;
       background-size: cover;
       background-position: center;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    .hero-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
-    }
-
-    .hero-text {
-      position: relative;
-      color: white;
-      font-size: clamp(2rem, 5vw, 4rem);
-      font-weight: 800;
-      text-align: center;
-      z-index: 2;
-      max-width: 900px;
-      padding: 0 40px;
-      text-wrap: balance;
-      animation: fadeInUp 1s ease-out;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .dots {
-      position: absolute;
-      bottom: 40px;
-      width: 100%;
-      text-align: center;
-      z-index: 4;
-    }
-
-    .dot {
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      margin: 0 8px;
-      background-color: rgba(255, 255, 255, 0.3);
-      border-radius: 20px;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .dot.active {
-      width: 40px;
-      background-color: white;
-    }
-
-    /* --- Students Section --- */
+    /* --- Gallery Section --- */
     .students-section {
-      max-width: 1200px;
-      margin: 0 auto 100px;
+      max-width: 1300px;
+      margin: 0 auto 150px;
       padding: 0 24px;
+    }
+
+    .section-header {
+      margin-bottom: 60px;
       text-align: center;
     }
 
-    .students-section h2 {
-      font-size: 2.5rem;
+    .section-header h2 {
+      font-size: 3rem;
       font-weight: 800;
-      margin-bottom: 50px;
-      letter-spacing: -1px;
-      background: linear-gradient(to right, var(--primary), #8b5cf6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      letter-spacing: -2px;
     }
 
     .student-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
     }
 
     .student-card {
-      background: var(--card-light);
-      border-radius: 24px;
-      padding: 24px;
-      text-align: center;
+      background: var(--card-dark);
+      backdrop-filter: blur(10px);
+      border-radius: 32px;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
       transition: var(--transition);
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
     }
 
-    body.dark-mode .student-card {
-      background: var(--card-dark);
-      border-color: rgba(255, 255, 255, 0.05);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    body.light-mode .student-card {
+      background: var(--card-light);
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .student-card:hover {
-      transform: translateY(-10px);
-      border-color: var(--primary);
-      box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
+      transform: translateY(-12px) scale(1.02);
+      border-color: var(--accent);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
 
     .student-card img {
-      width: 140px;
-      height: 140px;
+      width: 100%;
+      aspect-ratio: 1;
       object-fit: cover;
-      border-radius: 20px;
-      margin-bottom: 20px;
+      border-radius: 24px;
+      margin-bottom: 16px;
       transition: var(--transition);
-      background: #f1f5f9;
     }
 
-    .student-card:hover img {
-      transform: scale(1.05);
+    .student-card .info {
+      padding: 8px 12px 16px;
     }
 
-    .student-card div {
+    .student-card .name {
       font-weight: 700;
       font-size: 1.1rem;
-      color: inherit;
+      display: block;
+    }
+
+    .student-card .role {
+      font-size: 0.8rem;
+      opacity: 0.5;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .hidden {
       display: none;
     }
 
-    .see-more-container {
-      text-align: center;
-      margin-top: 60px;
-    }
-
-    .see-more {
-      font-size: 1rem;
-      font-weight: 700;
-      color: white;
-      background: var(--primary);
-      padding: 16px 40px;
-      border-radius: 50px;
-      cursor: pointer;
+    /* --- Buttons --- */
+    .btn-primary {
       display: inline-block;
-      transition: var(--transition);
-      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
-    }
-
-    .see-more:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
-    }
-
-    /* --- Footer --- */
-    footer {
-      background: var(--bg-dark);
-      color: #94a3b8;
-      text-align: center;
-      padding: 80px 20px;
-      font-size: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    footer p {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    footer b {
+      padding: 16px 32px;
+      background: var(--accent);
       color: white;
+      text-decoration: none;
+      border-radius: 16px;
+      font-weight: 700;
+      transition: var(--transition);
+      box-shadow: 0 10px 25px var(--accent-glow);
+      cursor: pointer;
+      border: none;
     }
 
-    @media (max-width: 768px) {
+    .btn-primary:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 35px var(--accent-glow);
+    }
+
+    footer {
+      padding: 100px 24px;
+      text-align: center;
+      opacity: 0.5;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: 100px;
+      }
+      .hero-visual {
+        height: 300px;
+        order: -1;
+      }
       nav {
-        gap: 15px;
-        padding: 15px 10px;
-        overflow-x: auto;
-        justify-content: flex-start;
+        width: 90%;
+        justify-content: center;
+        bottom: 16px;
       }
-      
-      nav::-webkit-scrollbar {
-        display: none;
-      }
-
-      .hero {
-        height: 60vh;
-      }
-
-      .student-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 20px;
-      }
-
-      .student-card img {
-        width: 100px;
-        height: 100px;
+      nav a {
+        padding: 8px 12px;
+        font-size: 0.75rem;
       }
     }
   </style>
 </head>
-<body>
+<body class="dark-mode">
 
-  <!-- 🌗 Dark Mode Toggle -->
-  <button class="toggle-mode" onclick="toggleMode()" aria-label="Toggle Dark Mode">🌓</button>
+  <div class="mesh-bg">
+    <div class="mesh-blob"></div>
+    <div class="mesh-blob mesh-blob-2"></div>
+  </div>
 
-  <!-- ✅ Navbar -->
+  <button class="toggle-mode" onclick="toggleMode()" aria-label="Toggle Theme">🌓</button>
+
+  <!-- ✅ Navigation Dock -->
   <nav id="navbar">
     <a href="#" class="active">Home</a>
-    <a href="students.html">Profile</a>
+    <a href="students.html">Profiles</a>
     <a href="usefulllink.html">Links</a>
-    <a href="studymaterial.html">Material</a>
-    <a href="suggestion.html">Suggestions</a>
+    <a href="studymaterial.html">Study</a>
+    <a href="suggestion.html">Idea</a>
     <a href="login.html">Login</a>
   </nav>
 
-  <!-- 🎯 Hero Section -->
-  <div class="hero" id="hero">
-    <div class="hero-slider" id="slider">
-      <div class="hero-slide" style="background-image: url('1.jpg');">
-        <div class="hero-overlay"></div>
-        <div class="hero-text">Welcome to the Chemical Engineering Family <br>IIT Patna</div>
+  <!-- 🎯 Hero -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1><span class="gradient-text">Future of</span><br>Engineering</h1>
+        <p style="font-size: 1.25rem; opacity: 0.7; margin-bottom: 40px; max-width: 500px;">
+          Empowering the next generation of Chemical Engineers at IIT Patna through innovation and community.
+        </p>
+        <button class="btn-primary" onclick="document.getElementById('gallery').scrollIntoView({behavior: 'smooth'})">Explore Gallery</button>
       </div>
-      <div class="hero-slide" style="background-image: url('images/3.jpg');">
-        <div class="hero-overlay"></div>
-        <div class="hero-text">Explore. Learn. Innovate. <br>Together We Grow!</div>
+      <div class="hero-visual">
+        <div class="hero-slider" id="slider">
+          <div class="hero-slide" style="background-image: url('1.jpg');"></div>
+          <div class="hero-slide" style="background-image: url('images/3.jpg');"></div>
+        </div>
       </div>
     </div>
-    <div class="dots">
-      <span class="dot active" onclick="goToSlide(0)"></span>
-      <span class="dot" onclick="goToSlide(1)"></span>
-    </div>
-  </div>
+  </section>
 
-  <!-- 🧑‍🎓 Students/Gallery -->
-  <section class="students-section">
-    <h2>OUR GALLERY</h2>
-    <div class="student-grid" id="studentGrid">
-      <div class="student-card"><img src="images/Anand.jpg" alt="Anand" onerror="this.src='https://ui-avatars.com/api/?name=Anand&background=random'"><div>Anand</div></div>
-      <div class="student-card"><img src="images/adarsh.jpg" alt="Adarsh" onerror="this.src='https://ui-avatars.com/api/?name=Adarsh&background=random'"><div>Adarsh</div></div>
-      <div class="student-card"><img src="images/nittin.jpg" alt="Nittin" onerror="this.src='https://ui-avatars.com/api/?name=Nittin&background=random'"><div>Nittin</div></div>
-      <div class="student-card"><img src="images/anurag.jpg" alt="Anurag" onerror="this.src='https://ui-avatars.com/api/?name=Anurag&background=random'"><div>Anurag</div></div>
-      
-      <!-- Hidden cards -->
-      <div class="student-card hidden"><img src="images/purva.jpg" alt="Purva" onerror="this.src='https://ui-avatars.com/api/?name=Purva&background=random'"><div>Purva Ughade</div></div>
-      <div class="student-card hidden"><img src="images/devyani.jpg" alt="Devyani" onerror="this.src='https://ui-avatars.com/api/?name=Devyani&background=random'"><div>Devyani Mude</div></div>
-      <div class="student-card hidden"><img src="images/sagar.png" alt="Sagar" onerror="this.src='https://ui-avatars.com/api/?name=Sagar&background=random'"><div>Sagar Kumar</div></div>
-      <div class="student-card hidden"><img src="images/sneha.jpg" alt="Sneha" onerror="this.src='https://ui-avatars.com/api/?name=Sneha&background=random'"><div>Sneha Sinha</div></div>
-      <div class="student-card hidden"><img src="pranay.jpg" alt="Pranay" onerror="this.src='https://ui-avatars.com/api/?name=Pranay&background=random'"><div>Pranay Dev</div></div>
-      <div class="student-card hidden"><img src="images/srijan.jpg" alt="Srijan" onerror="this.src='https://ui-avatars.com/api/?name=Srijan&background=random'"><div>Srijan Sharma</div></div>
-      <div class="student-card hidden"><img src="images/shivanshu.jpg" alt="Shivanshu" onerror="this.src='https://ui-avatars.com/api/?name=Shivanshu&background=random'"><div>Shivanshu Verma</div></div>
-      <div class="student-card hidden"><img src="images/aanushka.jpeg" alt="Aanushka" onerror="this.src='https://ui-avatars.com/api/?name=Aanushka&background=random'"><div>Aanushka Saha</div></div>
-      <div class="student-card hidden"><img src="images/susanth.jpg" alt="Susanth" onerror="this.src='https://ui-avatars.com/api/?name=Susanth&background=random'"><div>Susanth Badiganti</div></div>
-      <div class="student-card hidden"><img src="images/vaibhav.png" alt="Vaibhav" onerror="this.src='https://ui-avatars.com/api/?name=Vaibhav&background=random'"><div>Vaibhav</div></div>
-      <div class="student-card hidden"><img src="images/dhairya.jpg" alt="Dhairya" onerror="this.src='https://ui-avatars.com/api/?name=Dhairya&background=random'"><div>Dhairya Garg</div></div>
-      <div class="student-card hidden"><img src="images/saksham.png" alt="Saksham" onerror="this.src='https://ui-avatars.com/api/?name=Saksham&background=random'"><div>Saksham Thakur</div></div>
-      <div class="student-card hidden"><img src="images/suhas.jpg" alt="Suhas" onerror="this.src='https://ui-avatars.com/api/?name=Suhas&background=random'"><div>Sama Narasimha Suhas</div></div>
-      <div class="student-card hidden"><img src="images/Aryan.jpg" alt="Aryan" onerror="this.src='https://ui-avatars.com/api/?name=Aryan&background=random'"><div>Aryan Jain</div></div>
-      <div class="student-card hidden"><img src="images/jay.jpg" alt="Jay" onerror="this.src='https://ui-avatars.com/api/?name=Jay&background=random'"><div>Jay Girase</div></div>
-      <div class="student-card hidden"><img src="images/hatim.jpg" alt="Hatim" onerror="this.src='https://ui-avatars.com/api/?name=Hatim&background=random'"><div>Hatim Ali Jukkerwala</div></div>
-      <div class="student-card hidden"><img src="images/devyansh.jpg" alt="Devyansh" onerror="this.src='https://ui-avatars.com/api/?name=Devyansh&background=random'"><div>Devyansh Pandey</div></div>
-      <div class="student-card hidden"><img src="images/narain.png" alt="Narain" onerror="this.src='https://ui-avatars.com/api/?name=Narain&background=random'"><div>Narain Singh</div></div>
-      <div class="student-card hidden"><img src="images/aditi.jpg" alt="Aditi" onerror="this.src='https://ui-avatars.com/api/?name=Aditi&background=random'"><div>Aditi Lohiya</div></div>
-      <div class="student-card hidden"><img src="images/varshith.jpg" alt="Varshith" onerror="this.src='https://ui-avatars.com/api/?name=Varshith&background=random'"><div>Anugu Varshith Reddy</div></div>
-      <div class="student-card hidden"><img src="images/daspiyush.jpg" alt="Piyush" onerror="this.src='https://ui-avatars.com/api/?name=Piyush&background=random'"><div>Das Piyush</div></div>
-      <div class="student-card hidden"><img src="images/shashwat.jpg" alt="Shashwat" onerror="this.src='https://ui-avatars.com/api/?name=Shashwat&background=random'"><div>Shashwat Tiwari</div></div>
-      <div class="student-card hidden"><img src="images/Abdur.jpg" alt="Abdur" onerror="this.src='https://ui-avatars.com/api/?name=Abdur&background=random'"><div>Abdur Rehman Ayaz</div></div>
-      <div class="student-card hidden"><img src="images/jatin.jpg" alt="Jatin" onerror="this.src='https://ui-avatars.com/api/?name=Jatin&background=random'"><div>Jatin Khurana</div></div>
-      <div class="student-card hidden"><img src="images/joven.jpg" alt="Joven" onerror="this.src='https://ui-avatars.com/api/?name=Joven&background=random'"><div>Joven Sony</div></div>
-      <div class="student-card hidden"><img src="images/shubham.jpg" alt="Shubham" onerror="this.src='https://ui-avatars.com/api/?name=Shubham&background=random'"><div>Shubham</div></div>
-      <div class="student-card hidden"><img src="images/iman.jpg" alt="Iman" onerror="this.src='https://ui-avatars.com/api/?name=Iman&background=random'"><div>Iman Adhikary</div></div>
-      <div class="student-card hidden"><img src="images/vishal.jpg" alt="Vishal" onerror="this.src='https://ui-avatars.com/api/?name=Vishal&background=random'"><div>Vishal Singh</div></div>
-      <div class="student-card hidden"><img src="images/shristhi.jpg" alt="Shristhi" onerror="this.src='https://ui-avatars.com/api/?name=Shristhi&background=random'"><div>Shrishti Gupta</div></div>
-      <div class="student-card hidden"><img src="images/nikhil.jpg" alt="Nikhil" onerror="this.src='https://ui-avatars.com/api/?name=Nikhil&background=random'"><div>Sai Nikhil</div></div>
-      <div class="student-card hidden"><img src="images/komal.jpg" alt="Komal" onerror="this.src='https://ui-avatars.com/api/?name=Komal&background=random'"><div>Komal Kumari</div></div>
-      <div class="student-card hidden"><img src="images/shorya.jpg" alt="Shorya" onerror="this.src='https://ui-avatars.com/api/?name=Shorya&background=random'"><div>Shorya Pratap Singh</div></div>
-      <div class="student-card hidden"><img src="images/sandeep.jpg" alt="Sandeep" onerror="this.src='https://ui-avatars.com/api/?name=Sandeep&background=random'"><div>Sandeep Sisodiya</div></div>
-      <div class="student-card hidden"><img src="images/pragya.jpg" alt="Pragya" onerror="this.src='https://ui-avatars.com/api/?name=Pragya&background=random'"><div>Pragya Paliwal</div></div>
-      <div class="student-card hidden"><img src="images/pranil.gif" alt="Pranil" onerror="this.src='https://ui-avatars.com/api/?name=Pranil&background=random'"><div>Pranil Agrawal</div></div>
-      <div class="student-card hidden"><img src="images/aniket.jpg" alt="Aniket" onerror="this.src='https://ui-avatars.com/api/?name=Aniket&background=random'"><div>Aniket Kumar</div></div>
-      <div class="student-card hidden"><img src="images/namita.jpeg" alt="Namita" onerror="this.src='https://ui-avatars.com/api/?name=Namita&background=random'"><div>Namita Nigom</div></div>
-      <div class="student-card hidden"><img src="images/pranjal.jpg" alt="Pranjal" onerror="this.src='https://ui-avatars.com/api/?name=Pranjal&background=random'"><div>Pranjal Sutradhar</div></div>
-      <div class="student-card hidden"><img src="images/abhishek.jpg" alt="Abhishek" onerror="this.src='https://ui-avatars.com/api/?name=Abhishek&background=random'"><div>Abhishek Kumar</div></div>
-      <div class="student-card hidden"><img src="images/arsalan.jpg" alt="Arsalan" onerror="this.src='https://ui-avatars.com/api/?name=Arsalan&background=random'"><div>Arsalan Khan</div></div>
-      <div class="student-card hidden"><img src="images/khanak.jpg" alt="Khanak" onerror="this.src='https://ui-avatars.com/api/?name=Khanak&background=random'"><div>Khanak Jain</div></div>
-      <div class="student-card hidden"><img src="images/akash.jpg" alt="Akash" onerror="this.src='https://ui-avatars.com/api/?name=Akash&background=random'"><div>Aakash Kushwaha</div></div>
-      <div class="student-card hidden"><img src="images/Ashok.jpg" alt="Ashok" onerror="this.src='https://ui-avatars.com/api/?name=Ashok&background=random'"><div>Ashok Maloth</div></div>
-      <div class="student-card hidden"><img src="images/prateek.jpg" alt="Prateek" onerror="this.src='https://ui-avatars.com/api/?name=Prateek&background=random'"><div>Prateek Shree</div></div>
+  <!-- 🧑‍🎓 Student Bento Grid -->
+  <section class="students-section" id="gallery">
+    <div class="section-header">
+      <h2>MEET THE TRIBE</h2>
+      <p style="opacity: 0.5;">A collection of brilliant minds from IIT Patna</p>
     </div>
     
-    <div class="see-more-container">
-      <span class="see-more" onclick="showMoreStudents()">Show Gallery Gallery</span>
+    <div class="student-grid" id="studentGrid">
+      <!-- High Priority Cards -->
+      <div class="student-card"><img src="images/Anand.jpg" alt="Anand" onerror="this.src='https://ui-avatars.com/api/?name=Anand&background=6366f1&color=fff'"><div class="info"><span class="role">Student</span><span class="name">Anand</span></div></div>
+      <div class="student-card"><img src="images/adarsh.jpg" alt="Adarsh" onerror="this.src='https://ui-avatars.com/api/?name=Adarsh&background=6366f1&color=fff'"><div class="info"><span class="role">Student</span><span class="name">Adarsh</span></div></div>
+      <div class="student-card"><img src="images/nittin.jpg" alt="Nittin" onerror="this.src='https://ui-avatars.com/api/?name=Nittin&background=6366f1&color=fff'"><div class="info"><span class="role">Student</span><span class="name">Nittin</span></div></div>
+      <div class="student-card"><img src="images/anurag.jpg" alt="Anurag" onerror="this.src='https://ui-avatars.com/api/?name=Anurag&background=6366f1&color=fff'"><div class="info"><span class="role">Student</span><span class="name">Anurag</span></div></div>
+      
+      <!-- Stashed Cards -->
+      <div class="student-card hidden"><img src="images/purva.jpg" alt="Purva" onerror="this.src='https://ui-avatars.com/api/?name=Purva+Ughade&background=random'"><div class="info"><span class="role">Member</span><span class="name">Purva Ughade</span></div></div>
+      <div class="student-card hidden"><img src="images/devyani.jpg" alt="Devyani" onerror="this.src='https://ui-avatars.com/api/?name=Devyani+Mude&background=random'"><div class="info"><span class="role">Member</span><span class="name">Devyani Mude</span></div></div>
+      <div class="student-card hidden"><img src="images/sagar.png" alt="Sagar" onerror="this.src='https://ui-avatars.com/api/?name=Sagar+Kumar&background=random'"><div class="info"><span class="role">Member</span><span class="name">Sagar Kumar</span></div></div>
+      <div class="student-card hidden"><img src="images/sneha.jpg" alt="Sneha" onerror="this.src='https://ui-avatars.com/api/?name=Sneha+Sinha&background=random'"><div class="info"><span class="role">Member</span><span class="name">Sneha Sinha</span></div></div>
+      <div class="student-card hidden"><img src="pranay.jpg" alt="Pranay" onerror="this.src='https://ui-avatars.com/api/?name=Pranay+Dev&background=random'"><div class="info"><span class="role">Member</span><span class="name">Pranay Dev</span></div></div>
+      <div class="student-card hidden"><img src="images/srijan.jpg" alt="Srijan" onerror="this.src='https://ui-avatars.com/api/?name=Srijan+Sharma&background=random'"><div class="info"><span class="role">Member</span><span class="name">Srijan Sharma</span></div></div>
+      <div class="student-card hidden"><img src="images/shivanshu.jpg" alt="Shivanshu" onerror="this.src='https://ui-avatars.com/api/?name=Shivanshu+Verma&background=random'"><div class="info"><span class="role">Member</span><span class="name">Shivanshu Verma</span></div></div>
+      <div class="student-card hidden"><img src="images/aanushka.jpeg" alt="Aanushka" onerror="this.src='https://ui-avatars.com/api/?name=Aanushka+Saha&background=random'"><div class="info"><span class="role">Member</span><span class="name">Aanushka Saha</span></div></div>
+      <div class="student-card hidden"><img src="images/susanth.jpg" alt="Susanth" onerror="this.src='https://ui-avatars.com/api/?name=Susanth+Badiganti&background=random'"><div class="info"><span class="role">Member</span><span class="name">Susanth Badiganti</span></div></div>
+      <div class="student-card hidden"><img src="images/vaibhav.png" alt="Vaibhav" onerror="this.src='https://ui-avatars.com/api/?name=Vaibhav&background=random'"><div class="info"><span class="role">Member</span><span class="name">Vaibhav</span></div></div>
+      <div class="student-card hidden"><img src="images/dhairya.jpg" alt="Dhairya" onerror="this.src='https://ui-avatars.com/api/?name=Dhairya+Garg&background=random'"><div class="info"><span class="role">Member</span><span class="name">Dhairya Garg</span></div></div>
+      <div class="student-card hidden"><img src="images/saksham.png" alt="Saksham" onerror="this.src='https://ui-avatars.com/api/?name=Saksham+Thakur&background=random'"><div class="info"><span class="role">Member</span><span class="name">Saksham Thakur</span></div></div>
+      <div class="student-card hidden"><img src="images/suhas.jpg" alt="Suhas" onerror="this.src='https://ui-avatars.com/api/?name=Suhas&background=random'"><div class="info"><span class="role">Member</span><span class="name">Sama Narasimha Suhas</span></div></div>
+      <div class="student-card hidden"><img src="images/Aryan.jpg" alt="Aryan" onerror="this.src='https://ui-avatars.com/api/?name=Aryan+Jain&background=random'"><div class="info"><span class="role">Member</span><span class="name">Aryan Jain</span></div></div>
+      <div class="student-card hidden"><img src="images/jay.jpg" alt="Jay" onerror="this.src='https://ui-avatars.com/api/?name=Jay+Girase&background=random'"><div class="info"><span class="role">Member</span><span class="name">Jay Girase</span></div></div>
+      <div class="student-card hidden"><img src="images/hatim.jpg" alt="Hatim" onerror="this.src='https://ui-avatars.com/api/?name=Hatim+Ali&background=random'"><div class="info"><span class="role">Member</span><span class="name">Hatim Ali Jukkerwala</span></div></div>
+      <div class="student-card hidden"><img src="images/devyansh.jpg" alt="Devyansh" onerror="this.src='https://ui-avatars.com/api/?name=Devyansh+Pandey&background=random'"><div class="info"><span class="role">Member</span><span class="name">Devyansh Pandey</span></div></div>
+      <div class="student-card hidden"><img src="images/narain.png" alt="Narain" onerror="this.src='https://ui-avatars.com/api/?name=Narain+Singh&background=random'"><div class="info"><span class="role">Member</span><span class="name">Narain Singh</span></div></div>
+      <div class="student-card hidden"><img src="images/aditi.jpg" alt="Aditi" onerror="this.src='https://ui-avatars.com/api/?name=Aditi+Lohiya&background=random'"><div class="info"><span class="role">Member</span><span class="name">Aditi Lohiya</span></div></div>
+      <div class="student-card hidden"><img src="images/varshith.jpg" alt="Varshith" onerror="this.src='https://ui-avatars.com/api/?name=Varshith+Reddy&background=random'"><div class="info"><span class="role">Member</span><span class="name">Anugu Varshith Reddy</span></div></div>
+      <div class="student-card hidden"><img src="images/daspiyush.jpg" alt="Piyush" onerror="this.src='https://ui-avatars.com/api/?name=Das+Piyush&background=random'"><div class="info"><span class="role">Member</span><span class="name">Das Piyush</span></div></div>
+      <div class="student-card hidden"><img src="images/shashwat.jpg" alt="Shashwat" onerror="this.src='https://ui-avatars.com/api/?name=Shashwat+Tiwari&background=random'"><div class="info"><span class="role">Member</span><span class="name">Shashwat Tiwari</span></div></div>
+      <div class="student-card hidden"><img src="images/Abdur.jpg" alt="Abdur" onerror="this.src='https://ui-avatars.com/api/?name=Abdur+Rehman&background=random'"><div class="info"><span class="role">Member</span><span class="name">Abdur Rehman Ayaz</span></div></div>
+      <div class="student-card hidden"><img src="images/jatin.jpg" alt="Jatin" onerror="this.src='https://ui-avatars.com/api/?name=Jatin+Khurana&background=random'"><div class="info"><span class="role">Member</span><span class="name">Jatin Khurana</span></div></div>
+      <div class="student-card hidden"><img src="images/joven.jpg" alt="Joven" onerror="this.src='https://ui-avatars.com/api/?name=Joven+Sony&background=random'"><div class="info"><span class="role">Member</span><span class="name">Joven Sony</span></div></div>
+      <div class="student-card hidden"><img src="images/shubham.jpg" alt="Shubham" onerror="this.src='https://ui-avatars.com/api/?name=Shubham&background=random'"><div class="info"><span class="role">Member</span><span class="name">Shubham</span></div></div>
+      <div class="student-card hidden"><img src="images/iman.jpg" alt="Iman" onerror="this.src='https://ui-avatars.com/api/?name=Iman+Adhikary&background=random'"><div class="info"><span class="role">Member</span><span class="name">Iman Adhikary</span></div></div>
+      <div class="student-card hidden"><img src="images/vishal.jpg" alt="Vishal" onerror="this.src='https://ui-avatars.com/api/?name=Vishal+Singh&background=random'"><div class="info"><span class="role">Member</span><span class="name">Vishal Singh</span></div></div>
+      <div class="student-card hidden"><img src="images/shristhi.jpg" alt="Shristhi" onerror="this.src='https://ui-avatars.com/api/?name=Shristhi+Gupta&background=random'"><div class="info"><span class="role">Member</span><span class="name">Shrishti Gupta</span></div></div>
+      <div class="student-card hidden"><img src="images/nikhil.jpg" alt="Nikhil" onerror="this.src='https://ui-avatars.com/api/?name=Sai+Nikhil&background=random'"><div class="info"><span class="role">Member</span><span class="name">Sai Nikhil</span></div></div>
+      <div class="student-card hidden"><img src="images/komal.jpg" alt="Komal" onerror="this.src='https://ui-avatars.com/api/?name=Komal+Kumari&background=random'"><div class="info"><span class="role">Member</span><span class="name">Komal Kumari</span></div></div>
+      <div class="student-card hidden"><img src="images/shorya.jpg" alt="Shorya" onerror="this.src='https://ui-avatars.com/api/?name=Shorya+Singh&background=random'"><div class="info"><span class="role">Member</span><span class="name">Shorya Pratap Singh</span></div></div>
+      <div class="student-card hidden"><img src="images/sandeep.jpg" alt="Sandeep" onerror="this.src='https://ui-avatars.com/api/?name=Sandeep+Sisodiya&background=random'"><div class="info"><span class="role">Member</span><span class="name">Sandeep Sisodiya</span></div></div>
+      <div class="student-card hidden"><img src="images/pragya.jpg" alt="Pragya" onerror="this.src='https://ui-avatars.com/api/?name=Pragya+Paliwal&background=random'"><div class="info"><span class="role">Member</span><span class="name">Pragya Paliwal</span></div></div>
+      <div class="student-card hidden"><img src="images/pranil.gif" alt="Pranil" onerror="this.src='https://ui-avatars.com/api/?name=Pranil+Agrawal&background=random'"><div class="info"><span class="role">Member</span><span class="name">Pranil Agrawal</span></div></div>
+      <div class="student-card hidden"><img src="images/aniket.jpg" alt="Aniket" onerror="this.src='https://ui-avatars.com/api/?name=Aniket+Kumar&background=random'"><div class="info"><span class="role">Member</span><span class="name">Aniket Kumar</span></div></div>
+      <div class="student-card hidden"><img src="images/namita.jpeg" alt="Namita" onerror="this.src='https://ui-avatars.com/api/?name=Namita+Nigom&background=random'"><div class="info"><span class="role">Member</span><span class="name">Namita Nigom</span></div></div>
+      <div class="student-card hidden"><img src="images/pranjal.jpg" alt="Pranjal" onerror="this.src='https://ui-avatars.com/api/?name=Pranjal+Sutradhar&background=random'"><div class="info"><span class="role">Member</span><span class="name">Pranjal Sutradhar</span></div></div>
+      <div class="student-card hidden"><img src="images/abhishek.jpg" alt="Abhishek" onerror="this.src='https://ui-avatars.com/api/?name=Abhishek+Kumar&background=random'"><div class="info"><span class="role">Member</span><span class="name">Abhishek Kumar</span></div></div>
+      <div class="student-card hidden"><img src="images/arsalan.jpg" alt="Arsalan" onerror="this.src='https://ui-avatars.com/api/?name=Arsalan+Khan&background=random'"><div class="info"><span class="role">Member</span><span class="name">Arsalan Khan</span></div></div>
+      <div class="student-card hidden"><img src="images/khanak.jpg" alt="Khanak" onerror="this.src='https://ui-avatars.com/api/?name=Khanak+Jain&background=random'"><div class="info"><span class="role">Member</span><span class="name">Khanak Jain</span></div></div>
+      <div class="student-card hidden"><img src="images/akash.jpg" alt="Akash" onerror="this.src='https://ui-avatars.com/api/?name=Akash+Kushwaha&background=random'"><div class="info"><span class="role">Member</span><span class="name">Aakash Kushwaha</span></div></div>
+      <div class="student-card hidden"><img src="images/Ashok.jpg" alt="Ashok" onerror="this.src='https://ui-avatars.com/api/?name=Ashok+Maloth&background=random'"><div class="info"><span class="role">Member</span><span class="name">Ashok Maloth</span></div></div>
+      <div class="student-card hidden"><img src="images/prateek.jpg" alt="Prateek" onerror="this.src='https://ui-avatars.com/api/?name=Prateek+Shree&background=random'"><div class="info"><span class="role">Member</span><span class="name">Prateek Shree</span></div></div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 80px;">
+      <button class="btn-primary" id="seeMoreBtn" onclick="showMoreStudents()">Unlock Full Gallery</button>
     </div>
   </section>
 
   <!-- 📩 Footer -->
   <footer>
-    <p>Designed with ❤️ by <b>Anand</b> <br>
-    <small>Contact: anand31145@gmail.com</small></p>
+    <p>Designed for the next generation by <b>Anand</b><br>
+    IIT Patna Chemical Engineering community</p>
   </footer>
 
   <!-- 🎬 Scripts -->
   <script>
     const slider = document.getElementById('slider');
-    const dots = document.querySelectorAll('.dot');
     const totalSlides = slider.children.length;
     let currentSlide = 0;
-    let startX = 0;
 
     function showSlide(i) {
       currentSlide = i;
-      slider.style.transform = `translateX(-${i * 100}vw)`;
-      dots.forEach(dot => dot.classList.remove('active'));
-      dots[i].classList.add('active');
+      slider.style.transform = `translateX(-${i * 100}%)`;
     }
 
     function nextSlide() {
@@ -474,69 +456,47 @@
       showSlide(currentSlide);
     }
 
-    function goToSlide(i) {
-      showSlide(i);
-    }
-
-    // Auto-advance slider
-    let slideTimer = setInterval(nextSlide, 5000);
-
-    // Reset timer on user interaction
-    const resetTimer = () => {
-        clearInterval(slideTimer);
-        slideTimer = setInterval(nextSlide, 5000);
-    };
-
-    // Touch events for mobile swiping
-    document.getElementById('hero').addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-      resetTimer();
-    });
-
-    document.getElementById('hero').addEventListener('touchend', (e) => {
-      const diff = startX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 50) {
-        if (diff > 0) {
-            currentSlide = (currentSlide + 1) % totalSlides;
-        } else {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-        }
-        showSlide(currentSlide);
-      }
-    });
+    setInterval(nextSlide, 4000);
 
     function showMoreStudents() {
-      const hiddenCards = document.querySelectorAll('.student-card.hidden');
-      hiddenCards.forEach((card, index) => {
+      const hidden = document.querySelectorAll('.student-card.hidden');
+      hidden.forEach((card, i) => {
         card.classList.remove('hidden');
         card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        // Staggered appearance
+        card.style.transform = 'translateY(30px)';
         setTimeout(() => {
-            card.style.transition = 'all 0.6s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        }, index * 50);
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, i * 30);
       });
-      document.querySelector('.see-more-container').style.display = 'none';
+      document.getElementById('seeMoreBtn').style.display = 'none';
     }
 
     function toggleMode() {
-      document.body.classList.toggle('dark-mode');
-      const icon = document.querySelector('.toggle-mode');
-      icon.innerHTML = document.body.classList.contains('dark-mode') ? '☀️' : '🌓';
+      const body = document.body;
+      body.classList.toggle('light-mode');
+      body.classList.toggle('dark-mode');
     }
 
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-        const nav = document.getElementById('navbar');
-        if (window.scrollY > 50) {
-            nav.style.padding = '12px 20px';
-            nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
-        } else {
-            nav.style.padding = '20px';
-            nav.style.boxShadow = 'none';
+    // Scroll reveal for cards
+    const observerOptions = {
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
         }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.student-card').forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'all 0.6s ease-out';
+      observer.observe(card);
     });
   </script>
 
